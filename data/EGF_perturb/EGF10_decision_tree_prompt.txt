@@ -1,0 +1,110 @@
+You are an expert in computational biology and system biology, analyzing the classification results of the interpretable machine learning pipeline. Please interpret the decision tree rules below to identify the biological, feature-driven logic. Exploring the dependency/relationship/pathways of the features to explore the relationship between cell features and cell response (pERK) at 10 ng/mL EGF..
+
+--- EXPERIMENT CONTEXT & DATA PIPELINE ---
+1. Goal: Forming biological rationale and hypothesis based on the decision tree results to explain why Cytoplasm Intensity mean Actin heavily attributes to the prediction of the present of pERK. Target feature: 'Cytoplasm Intensity mean Actin'. Target response: 'pERK'.
+
+2. Upstream Model: A PyTorch nonlinear Multi-layer Perception model was trained on the raw dataset.
+
+3. Feature Selection: Integrated Gradients (IG) was applied. Actin shows a high positive attribution to pERK. The other 22 features were selected.
+
+4. Label Generation: Samples were labeled as Class 1 ('High Target Attribution') if their IG score for Cytoplasm Intensity mean Actin fell in the extreme 10%. All other samples are Class 0. For Cytoplasm Intensity mean Actin, the Positive attribution analysis was performed. Cytoplasm Intensity mean Actin has a positive correlation with pERK identified by attribution score and raw value.
+
+5. Tree Parameters and classification: max_depth=4, min_samples_leaf=5, class_weight=None. The decision tree aims to find the conditions that contain most Class 1 data points and minimal Class 0 data points.
+
+6: Data source: Data is Obtained from "Multimodal perception links cellular state to decision-making in single cells" on Science.
+
+--- TARGET ZONES (CLASS 1 LEAF NODES) ---
+These are the specific logic zones that successfully isolated 'High Attribution' samples. Prioritize analyzing nodes with high True Positives (TP) and high Precision. True Positive: the numbers of the data points labeled with Class 1. False Positive: the number of the data points labeled with Class 0.
+
+Node 14:
+  - Logic: Cytoplasm Intensity mean Paxillin <= 1.106 AND Cytoplasm Intensity mean Paxillin > 0.588 AND Nucleus Intensity mean YAP > 0.586 AND Cytoplasm Intensity mean Paxillin > 0.896
+  - True Positives (TP): 101 (High Attribution)
+  - False Positives (FP): 94 (Noise/Other)
+  - Precision: 51.8%
+
+Node 23:
+  - Logic: Cytoplasm Intensity mean Paxillin > 1.106 AND Cytoplasm Intensity mean Paxillin > 1.342 AND Nucleus Intensity mean YAP <= -0.236 AND Cytoplasm Intensity mean Paxillin <= 2.170
+  - True Positives (TP): 242 (High Attribution)
+  - False Positives (FP): 196 (Noise/Other)
+  - Precision: 55.3%
+
+Node 24:
+  - Logic: Cytoplasm Intensity mean Paxillin > 1.106 AND Cytoplasm Intensity mean Paxillin > 1.342 AND Nucleus Intensity mean YAP <= -0.236 AND Cytoplasm Intensity mean Paxillin > 2.170
+  - True Positives (TP): 38 (High Attribution)
+  - False Positives (FP): 4 (Noise/Other)
+  - Precision: 90.5%
+
+Node 27:
+  - Logic: Cytoplasm Intensity mean Paxillin > 1.106 AND Cytoplasm Intensity mean Paxillin > 1.342 AND Nucleus Intensity mean YAP > -0.236 AND Cytobody Intensity mean Paxillin <= 1.597
+  - True Positives (TP): 190 (High Attribution)
+  - False Positives (FP): 69 (Noise/Other)
+  - Precision: 73.4%
+
+Node 28:
+  - Logic: Cytoplasm Intensity mean Paxillin > 1.106 AND Cytoplasm Intensity mean Paxillin > 1.342 AND Nucleus Intensity mean YAP > -0.236 AND Cytobody Intensity mean Paxillin > 1.597
+  - True Positives (TP): 248 (High Attribution)
+  - False Positives (FP): 30 (Noise/Other)
+  - Precision: 89.2%
+
+Node 29:
+  - Logic: Cytoplasm Intensity mean Paxillin > 1.106 AND Cytoplasm Intensity mean Paxillin <= 1.342 AND Nucleus Intensity mean YAP > 0.331 AND Nucleus Intensity mean DAPI <= 0.307
+  - True Positives (TP): 42 (High Attribution)
+  - False Positives (FP): 29 (Noise/Other)
+  - Precision: 59.2%
+
+Node 30:
+  - Logic: Cytoplasm Intensity mean Paxillin > 1.106 AND Cytoplasm Intensity mean Paxillin <= 1.342 AND Nucleus Intensity mean YAP > 0.331 AND Nucleus Intensity mean DAPI > 0.307
+  - True Positives (TP): 103 (High Attribution)
+  - False Positives (FP): 41 (Noise/Other)
+  - Precision: 71.5%
+
+--- FULL DECISION TREE RAW RULES ---
+|--- Cytoplasm Intensity mean Paxillin <= 1.11
+|   |--- Cytoplasm Intensity mean Paxillin <= 0.59
+|   |   |--- Nucleus Intensity mean PCNA <= -1.41
+|   |   |   |--- Nucleus Morphology Perimeter <= 0.86
+|   |   |   |   |--- class: 0
+|   |   |   |--- Nucleus Morphology Perimeter >  0.86
+|   |   |   |   |--- class: 0
+|   |   |--- Nucleus Intensity mean PCNA >  -1.41
+|   |   |   |--- Cytoplasm Intensity mean Paxillin <= 0.28
+|   |   |   |   |--- class: 0
+|   |   |   |--- Cytoplasm Intensity mean Paxillin >  0.28
+|   |   |   |   |--- class: 0
+|   |--- Cytoplasm Intensity mean Paxillin >  0.59
+|   |   |--- Nucleus Intensity mean YAP <= 0.59
+|   |   |   |--- Nucleus Intensity mean YAP <= -0.46
+|   |   |   |   |--- class: 0
+|   |   |   |--- Nucleus Intensity mean YAP >  -0.46
+|   |   |   |   |--- class: 0
+|   |   |--- Nucleus Intensity mean YAP >  0.59
+|   |   |   |--- Cytoplasm Intensity mean Paxillin <= 0.90
+|   |   |   |   |--- class: 0
+|   |   |   |--- Cytoplasm Intensity mean Paxillin >  0.90
+|   |   |   |   |--- class: 1
+|--- Cytoplasm Intensity mean Paxillin >  1.11
+|   |--- Cytoplasm Intensity mean Paxillin <= 1.34
+|   |   |--- Nucleus Intensity mean YAP <= 0.33
+|   |   |   |--- Nucleus Intensity mean YAP <= -1.41
+|   |   |   |   |--- class: 0
+|   |   |   |--- Nucleus Intensity mean YAP >  -1.41
+|   |   |   |   |--- class: 0
+|   |   |--- Nucleus Intensity mean YAP >  0.33
+|   |   |   |--- Nucleus Intensity mean DAPI <= 0.31
+|   |   |   |   |--- class: 1
+|   |   |   |--- Nucleus Intensity mean DAPI >  0.31
+|   |   |   |   |--- class: 1
+|   |--- Cytoplasm Intensity mean Paxillin >  1.34
+|   |   |--- Nucleus Intensity mean YAP <= -0.24
+|   |   |   |--- Cytoplasm Intensity mean Paxillin <= 2.17
+|   |   |   |   |--- class: 1
+|   |   |   |--- Cytoplasm Intensity mean Paxillin >  2.17
+|   |   |   |   |--- class: 1
+|   |   |--- Nucleus Intensity mean YAP >  -0.24
+|   |   |   |--- Cytobody Intensity mean Paxillin <= 1.60
+|   |   |   |   |--- class: 1
+|   |   |   |--- Cytobody Intensity mean Paxillin >  1.60
+|   |   |   |   |--- class: 1
+
+--- TASK ---
+Based on the TARGET ZONES above, forming rationale and hypothesis of the feature relationship (pathways) to explain HOW features interactively regulate pERK with Cytoplasm Intensity mean Actin. Highlight which zones are the most biologically robust based on the highest number of True Positives and Precision. Identify the findings into two categories: 1. the findings directly confirm the literature knowledge or original paper's conclusion. 2. suggesting new testable mechanisms supported by literature. List the publications supporting the conclusions. Next, look into the second good zone and repeat the analysis (the conclusions for two highlight zones will be presented separately).
