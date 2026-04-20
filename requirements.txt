@@ -1,0 +1,22 @@
+# --- Core Data Manipulation & Math ---
+numpy
+pandas
+scipy
+h5py
+
+# --- Deep Learning & Interpretability ---
+torch
+captum
+shap
+
+# --- Machine Learning & Downsampling ---
+scikit-learn
+imbalanced-learn
+
+# --- Single-Cell Specific ---
+scanpy
+umap-learn
+
+# --- Visualization ---
+matplotlib
+seaborn
